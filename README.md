@@ -23,9 +23,9 @@
 
 ## 训练结果
 
-原理推导详见[此处](.\doc\基于PB人工神经网络的数字手写体识别模型.pdf)。数据集见[此处](.\dataset\mnist_train.csv)与[此处](.\dataset\mnist_test.csv)。
+原理推导详见[此处](./doc/基于PB人工神经网络的数字手写体识别模型.pdf)。数据集见[此处](./dataset/mnist_train.csv)与[此处](./dataset/mnist_test.csv)。
 
-![损失函数与准确率曲线](.\doc\result.png)
+![损失函数与准确率曲线](./doc/result.png)
 
 ## 配置要求
 
