@@ -1,67 +1,68 @@
-
 # BPNetwork
 
-一个简单数字识别的反向传播（Back Propagation, BP）神经网络。神经网络，简单讲就是~~拟合~~（找规律）。而反向传播是指，通过残差结果反向调整参数。
+人工神经网络是实现人工智能的关键技术。反向传播是一种通过最小化预测误差来优化神经网络参数的算法，其核心思想是利用梯度下降法调整网络权重，以提高预测准确性。本文讨论了反向传播人工神经网络的原理，阐述了该模型的前向传播与反向传播以及参数更新的过程，并用MNIST数字手写体数据集进行模型验证。该模型识别准确率在测试集中达到97.64\%。
+
+[![Contributors][contributors-shield]][contributors-url]
+[![Forks][forks-shield]][forks-url]
+[![Stargazers][stars-shield]][stars-url]
+[![Issues][issues-shield]][issues-url]
+[![MIT License][license-shield]][license-url]
+[![LinkedIn][linkedin-shield]][linkedin-url]
 
 
-## 网络结构
+ 本篇README.md面向开发者
 
-- ### 神经元结构 
+## 目录
 
-一个神经元从多个输入端感受信号刺激，通过线性系统和非线性的激活函数输出一个输出。假设信号的输入矢量是$\mathbf{X}_{in}\in\mathbb{R}^n$，其中$n$是输入信号的维度，若该神经元的参数特性有权重矢量$\mathbf{W}\in\mathbb{R}^n$，偏置量$b$，则该神经元的信号输入$\mathbf{X}_{in}$与输出$x_{out}$满足
-$$
-\begin{align}
-x_{out} &= f( \mathbf{W}^T\cdot\mathbf{X}_{in}+b) 
-\end{align}
-$$
+- [训练结果](#训练结果)
+- [配置要求](#开发前的配置要求)
+- [版本控制](#版本控制)
+- [贡献者](#贡献者)
+- [版本说明](#版本说明)
+- [鸣谢](#鸣谢)
 
-- ### 层结构
+## 训练结果
 
-BP神经网络有三种层，分别是**输入层（Input）**、**隐含层（Hidden）**、**输出层（Output）**。隐含层可以有若干个。有关研究表明，一个隐含层的神经网络，只要神经元足够多，就可以以任意精度逼近一个非线性函数。因此，通常采用含有一个隐层的三层多输入单输出的BP神经网络建立预测模型。若是神经元数目过少，则会影响网络性能，达不到预期效果；若隐层神经元数目过多，会加大网络计算量并容易产生过度拟合问题。
+原理推导详见[此处](.\doc\基于PB人工神经网络的数字手写体识别模型.pdf)。数据集见[此处](.\dataset\mnist_train.csv)与[此处](.\dataset\mnist_test.csv)。
 
+![损失函数与准确率曲线](.\doc\result.png)
 
-## 原理推导
+## 配置要求
 
-### 前向传播
-
-#### 信号输入
-
-
-将图像的二值化矩阵从$(m , n)$展平成$(m*n, 1)$作为输入层，则输入层的维度为$m*n$。
-
-令$\mathbf{W_i}\in\mathbb{R}^{m*n}$为的权重矩阵，$\mathbf{B_i}\in\mathbb{R}^{m*n}$。
-
-#### 
-
-### 激活函数
-
-选取**ReLU**函数作为激活函数。ReLU函数可以很有效解决[梯度消失](https://zh.wikipedia.org/wiki/%E6%A2%AF%E5%BA%A6%E6%B6%88%E5%A4%B1%E9%97%AE%E9%A2%98)的问题。
-
-$$
-
-\begin{align}
-ReLU(x)&=\left\{ 
-    \begin{array}{rcl}
-    0 && {x\leq0}\\
-    x && {x>0}
-    \end{array}
-\right.
-\end{align}
-
-$$
+1. numpy~=1.24.4
+2. pandas~=2.0.3
+3. matplotlib~=3.7.5
 
 
+## 版本控制
 
-$$
+该项目使用Git进行版本管理。您可以在repository参看当前可用版本。
 
-\begin{align}
-\mathcal{f}(\mathbf{X})&=\mathbf{W}_i ~\cdot~\mathbf{X}~+~\mathbf{B} 
-\end{align}
-$$
+## 贡献者
 
+**Lorenzo Feng** <br/>
+:mailbox: lorenzo.feng@njust.edu.cn
 
-$$
+:airplane: Telegram: [Click Me](https://t.me/lorenzofeng)    
 
+ *您也可以在贡献者名单中参看所有参与该项目的开发者。*
 
+## 版权说明
 
-$$
+该项目签署了Apache 授权许可，详情请参阅 [LICENSE](https://github.com/7emotions/ChromiumSpider/blob/master/LICENSE.txt)
+
+<!-- links -->
+
+[your-project-path]:njust-opensource/BPNetwork
+[contributors-shield]: https://img.shields.io/github/contributors/njust-opensource/BPNetwork.svg?style=flat-square
+[contributors-url]: https://github.com/njust-opensource/BPNetwork/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/njust-opensource/BPNetwork.svg?style=flat-square
+[forks-url]: https://github.com/njust-opensource/BPNetwork/network/members
+[stars-shield]: https://img.shields.io/github/stars/njust-opensource/BPNetwork.svg?style=flat-square
+[stars-url]: https://github.com/njust-opensource/BPNetwork/stargazers
+[issues-shield]: https://img.shields.io/github/issues/njust-opensource/BPNetwork.svg?style=flat-square
+[issues-url]: https://img.shields.io/github/issues/njust-opensource/BPNetwork.svg
+[license-shield]: https://img.shields.io/github/license/njust-opensource/BPNetwork.svg?style=flat-square
+[license-url]: https://github.com/njust-opensource/BPNetwork/blob/master/LICENSE
+[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555
+[linkedin-url]: https://linkedin.com/in/shaojintian
