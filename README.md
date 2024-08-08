@@ -23,7 +23,7 @@
 
 ## 训练结果
 
-原理推导详见[此处](./doc/基于PB人工神经网络的数字手写体识别模型.pdf)。数据集见[此处](./dataset/mnist_train.csv)与[此处](./dataset/mnist_test.csv)。
+如下图所示，模型交叉熵损失在10的-10次方的数量级，识别准确率达到97.64\%。原理推导详见[此处](./doc/基于PB人工神经网络的数字手写体识别模型.pdf)。数据集见[此处](./dataset/mnist_train.csv)与[此处](./dataset/mnist_test.csv)。
 
 ![损失函数与准确率曲线](./doc/result.png)
 
@@ -49,7 +49,7 @@
 
 ## 版权说明
 
-该项目签署了Apache 授权许可，详情请参阅 [LICENSE](https://github.com/7emotions/ChromiumSpider/blob/master/LICENSE.txt)
+该项目签署了MIT 授权许可，详情请参阅 [LICENSE](https://github.com/7emotions/ChromiumSpider/blob/master/LICENSE.txt)
 
 <!-- links -->
 
