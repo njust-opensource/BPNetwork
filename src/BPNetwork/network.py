@@ -1,4 +1,7 @@
+import math
+
 from matplotlib import pyplot as plt
+from tqdm import trange , tqdm
 import pandas as pd
 import numpy as np
 
@@ -55,6 +58,18 @@ class BPNNetwork:
             'b_o': np.random.randn(self.output_size, 1)
         }
 
+        self.best_accuracy = 0
+        self.best = {
+            'weights': {
+                'W_h': np.random.randn(self.hidden_size, self.input_size) * 0.01,
+                'W_o': np.random.randn(self.output_size, self.hidden_size) * 0.01
+            },
+            'bias': {
+                'b_h': np.random.randn(self.hidden_size, 1),
+                'b_o': np.random.randn(self.output_size, 1)
+            }
+        }
+
     def forward_propagation(self, x_in: np.ndarray) -> dict:
         z_h = np.dot(self.weights['W_h'], x_in) + self.biases['b_h']
         x_h = ReLU(z_h)
@@ -65,7 +80,6 @@ class BPNNetwork:
         return {'z_h': z_h, 'x_h': x_h, 'z_o': z_o, 'y_hat': y_hat}
 
     def backward_propagation(self, x: np.ndarray, y_true: np.ndarray, forward: dict) -> dict:
-        m = x.shape[0]
 
         dZ_o = forward['y_hat'] - y_true
         dW_o = np.dot(dZ_o, forward['x_h'].T)
@@ -91,38 +105,53 @@ class BPNNetwork:
         accuracy_history = pd.Series()
 
         for epoch in range(num_epochs):
-            loss = -1
-            for _ in range(len(train_xs)):
-                x = train_xs[_].reshape(-1, 1)
-                y_true = train_ys[_].reshape(-1, 1)
-                forward = self.forward_propagation(x)
-                loss = cross_entropy_loss(y_true, forward['y_hat'])
-                gradients = self.backward_propagation(x, y_true, forward)
-                self.update_parameters(learning_rate, gradients)
+            try:
+                loss = -1
 
-            counter = 0
-            for _ in range(len(test_xs)):
-                y_pre = self.predict(test_xs[_].reshape(-1, 1))
-                if y_pre == np.argmax(test_ys[_], axis=0):
-                    counter += 1
-            accuracy_history[epoch] = counter / len(test_xs)
+                with trange(len(train_xs), desc="Training", unit=' Iter', ncols=150, position=0) as pbar:
+                    for _ in pbar:
+                        x = train_xs[_].reshape(-1, 1)
+                        y_true = train_ys[_].reshape(-1, 1)
+                        forward = self.forward_propagation(x)
+                        loss = cross_entropy_loss(y_true, forward['y_hat'])
+                        gradients = self.backward_propagation(x, y_true, forward)
+                        self.update_parameters(learning_rate, gradients)
 
-            if accuracy_history[epoch] > target_accuracy:
-                print(f'Epoch {epoch}, Loss: {last_loss}, Accuracy: {accuracy_history[epoch]}')
+                        pbar.set_description(f'Epoch: {epoch:4d}, Last loss :{loss:+.2e}, '
+                                             f'Best Accuracy: {self.best_accuracy:2.2%}')
+
+                counter = 0
+                for __ in range(len(test_xs)):
+                    y_pre = self.predict(test_xs[__].reshape(-1, 1))
+                    if y_pre == np.argmax(test_ys[__], axis=0):
+                        counter += 1
+                accuracy_history[epoch] = counter / len(test_xs)
+
+                if accuracy_history[epoch] > self.best_accuracy:
+                    self.best_accuracy = accuracy_history[epoch]
+                    self.best['weights'] = self.weights
+                    self.best['bias'] = self.biases
+
+                if accuracy_history[epoch] > target_accuracy:
+                    tqdm.write(f'Epoch {epoch + 1}, Last loss: {last_loss}, Best Accuracy: {self.best_accuracy}')
+                    return loss_history, accuracy_history
+                else:
+                    loss_history[epoch] = loss
+                    last_loss = loss
+            except KeyboardInterrupt:
+                tqdm.write(f"Interrupt from Keyboard. Best Accuracy: {self.best_accuracy}")
                 return loss_history, accuracy_history
-            else:
-                loss_history[epoch] = loss
-                last_loss = loss
-
-            if epoch % 100 == 0:
-                print(f'Epoch {epoch}, Loss: {last_loss}, Accuracy: {accuracy_history[epoch]}')
 
     def predict(self, x: np.ndarray) -> int:
         forward = self.forward_propagation(x)
         return np.argmax(forward['y_hat'], axis=0)[0]
 
     def save(self, path: str):
-        np.savez(path, w_h=self.weights['W_h'], w_o=self.weights['W_o'], b_h=self.biases['b_h'], b_o=self.biases['b_o'])
+        np.savez(path,
+                 w_h=self.best['weights']['W_h'],
+                 w_o=self.best['weights']['W_o'],
+                 b_h=self.best['bias']['b_h'],
+                 b_o=self.best['bias']['b_o'])
 
     def load(self, path: str):
         data = np.load(path)

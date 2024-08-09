@@ -12,10 +12,12 @@ if __name__ == '__main__':
 
     network = BPNNetwork(input_size=784, hidden_size=128, output_size=10)
     loss_history, accuracy_history = network.train(train_x, train_y, test_x, test_y, learning_rate=0.01,
-                                                   num_epochs=1000, target_accuracy=0.97)
-    fig, ax = plt.subplots(2, 1)
-    loss_history.plot(ax=ax[0], grid=True, label='Loss', style='--')
-    accuracy_history.plot(ax=ax[1], grid=True, label='Accuracy')
-    network.save(f"../model/mnist_model-{datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}.npz")
-    plt.legend()
-    plt.show()
+                                                   num_epochs=1000, target_accuracy=0.98)
+    if network.best_accuracy != -1:
+        fig, ax = plt.subplots(2, 1)
+        loss_history.plot(ax=ax[0], grid=True, label='Loss', style='--')
+        accuracy_history.plot(ax=ax[1], grid=True, label='Accuracy')
+        network.save(f"../model/mnist_model-{datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}-"
+                     f"{network.best_accuracy}.npz")
+        plt.legend()
+        plt.show()
