@@ -53,7 +53,7 @@
 
 ## 版权说明
 
-该项目签署了MIT 授权许可，详情请参阅 [LICENSE](https://github.com/njust-opensource/BPNetwork/blob/master/LICENSE.txt)
+该项目签署了MIT 授权许可，详情请参阅 [LICENSE](https://github.com/njust-opensource/BPNetwork/blob/main/LICENSE)
 
 <!-- links -->
 
